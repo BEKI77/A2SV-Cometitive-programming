@@ -1,12 +1,13 @@
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
-        def isSafe(r,c, board,n):
+        def isSafe(r,c):
+            nonlocal n
             for i in range(c):
                 if board[r][i]=='Q':
                     return False
 
             i, j = r, c
-            while i >= 0 and j >= 0:
+            while i > -1 and j > -1:
                 if board[i][j] == 'Q':
                     return False
                 i -= 1
@@ -21,20 +22,18 @@ class Solution:
 
             return True
 
-        def backtrack(c,n):
+        def backtrack(c):
+            nonlocal n
             if c == n:
-                temp = []
-                for i in range(len(board)):
-                    temp.append( "".join(board[i]))
-                ans.append(temp)
-                print(ans)
+                ans.append(["".join(board[i]) for i in range(len(board))])
+               
             for k in range(n):
-                if isSafe(k,c,board,n):
+                if isSafe(k,c):
                     board[k][c]='Q'
-                    backtrack(c+1,n)
+                    backtrack(c+1)
                     board[k][c]='.'
 
         ans = []
         board = [['.' for _ in range(n)]for _ in range(n)]
-        backtrack(0,n)
+        backtrack(0)
         return ans
